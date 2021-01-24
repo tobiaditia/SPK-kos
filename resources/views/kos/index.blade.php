@@ -23,7 +23,7 @@
                         <tr>
                             <td>{{ $loop->iteration + $kos->firstItem() - 1 }}</td>
                             <td>{{ $i_kos->nama }}</td>
-                            <td>{{ $i_kos->getKamar->count() }}</td>
+                            <td>{{ $i_kos->kamar->count() }}</td>
                             <td>
                                 <a href="/admin/kos/{{ $i_kos->id }}" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                                 <a href="/admin/kos/{{ $i_kos->id }}/edit" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>

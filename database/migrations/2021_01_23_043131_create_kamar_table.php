@@ -15,12 +15,15 @@ class CreateKamarTable extends Migration
     {
         Schema::create('kamar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_kos');
+            $table->foreignId('kos_id');
             $table->string('nama', 100);
             $table->integer('kapasitas');
             $table->integer('harga');
             $table->enum('pembayaran', ['perhari', 'perminggu', 'perbulan']);
             $table->timestamps();
+
+            $table->foreign('kos_id')->references('id')
+                    ->on('kos')->onDelete('cascade');
         });
     }
 

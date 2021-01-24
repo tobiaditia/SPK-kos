@@ -14,8 +14,8 @@ class Kos extends Model
         'no_hp',
     ];
 
-    public function getKamar()
+    public function kamar()
     {
-        return $this->hasMany('App\Kamar','id_kos','id');
+        return $this->hasMany('App\Kamar');
     }
 }

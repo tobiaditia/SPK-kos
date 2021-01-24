@@ -10,4 +10,9 @@ class Fasilitas extends Model
     protected $fillable = [
         'nama',
     ];
+
+    public function kamar()
+    {
+        return $this->belongsToMany('App\Kamar');
+    }
 }

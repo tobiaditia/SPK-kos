@@ -14,8 +14,13 @@ class CreateFasilitasKamarTable extends Migration
     public function up()
     {
         Schema::create('fasilitas_kamar', function (Blueprint $table) {
-            $table->foreignId('id_kamar');
-            $table->foreignId('id_failitas');
+            $table->id();
+            $table->foreignId('kamar_id');
+            $table->foreignId('fasilitas_id');
+            $table->timestamps();
+
+            $table->foreign('kamar_id')->references('id')->on('kamar')->onDelete('cascade');
+            $table->foreign('fasilitas_id')->references('id')->on('fasilitas')->onDelete('cascade');
         });
     }
 

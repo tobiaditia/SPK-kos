@@ -8,15 +8,20 @@ class Kamar extends Model
 {
     protected $table = 'kamar';
     protected $fillable = [
-        'id_kos',
+        'kos_id',
         'nama',
         'kapasitas',
         'harga',
         'pembayaran',
     ];
 
-    public function getKos()
+    public function kos()
     {
         return $this->belongsTo('App\Kos');
+    }
+
+    public function fasilitas()
+    {
+        return $this->belongsToMany('App\Fasilitas');
     }
 }

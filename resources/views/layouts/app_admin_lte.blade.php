@@ -64,7 +64,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link active">
+            <a href="/admin/kos" class="nav-link  {{ Request::segment(2) == 'kos' ? 'active' : '' }}">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Kos
@@ -73,7 +73,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="/admin/fasilitas" class="nav-link {{ Request::segment(2) == 'fasilitas' ? 'active' : '' }}">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Fasilitas

@@ -18,6 +18,14 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::resource('kos', 'KosController');
-    Route::get('kos/{id}/kamar','KosController@kamar');
+    Route::resource('kos', 'KosController')->parameters(['kos' => 'kos']);
+    Route::resource('fasilitas', 'FasilitasController')->parameters(['fasilitas' => 'fasilitas']);
+
+    Route::get('kos/{kos}/kamar','KosController@kamar');
+    Route::get('kos/{kos}/kamar/create','KamarController@create');
+    Route::post('kos/{kos}/kamar/store','KamarController@store');
+    Route::get('kos/{kos}/kamar/{kamar}/edit','KamarController@edit');
+    Route::get('kos/{kos}/kamar/{kamar}','KamarController@show');
+    Route::put('kos/{kos}/kamar/{kamar}','KamarController@update');
+    Route::delete('kos/{kos}/kamar/{kamar}/destroy','KamarController@destroy');
 });
