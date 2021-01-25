@@ -25,9 +25,15 @@
                             <td>{{ $i_kos->nama }}</td>
                             <td>{{ $i_kos->kamar->count() }}</td>
                             <td>
-                                <a href="/admin/kos/{{ $i_kos->id }}" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                {{-- <a href="/admin/kos/{{ $i_kos->id }}" data-id="{{ $i_kos->id }}" class="btn btn-sm btn-primary show"><i class="fas fa-eye"></i></a> --}}
+                                <button data-id="{{ $i_kos->id }}" class="btn btn-sm btn-primary show"><i class="fas fa-eye"></i></button>
                                 <a href="/admin/kos/{{ $i_kos->id }}/edit" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
-                                <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                <form action="/admin/kos/{{ $i_kos->id }}" method="POST" class="d-inline">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger"><i
+                                            class="fas fa-trash"></i></button>
+                                </form>
                                 <a href="/admin/kos/{{ $i_kos->id }}/kamar" class="btn btn-sm btn-primary">
                                     <i class="fas fa-list"></i> Lihat Kamar
                                 </a>
@@ -41,4 +47,22 @@
             {{ $kos->links() }}
         </div>
     </div>
+    <x-modalShow titleModal="Detail Kos" type="kos" size="modal-lg" />
+
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '.show', function() {
+                var data_id = $(this).data('id');
+                $.get('kos/' + data_id , function(data) {
+                    
+                    $('#show-modal').modal('show');
+
+                    $('#nama').text(data.nama);
+                    $('#id_lokasi').text(data.id_lokasi);
+                    $('#deskripsi').text(data.deskripsi);
+                    $('#no_hp').text(data.no_hp);
+                })
+            });
+        });
+    </script>
 @endsection

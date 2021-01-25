@@ -19,31 +19,64 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if ($kamar->count() == 0)
+                        <tr>
+                            <td colspan="4" class="text-center bg-secondary">Data Kosong</td>
+                        </tr>
+                    @endif
                     @foreach ($kamar as $i_kamar)
                         <tr>
                             <td>{{ $loop->iteration + $kamar->firstItem() - 1 }}</td>
                             <td>{{ $i_kamar->nama }}</td>
                             <td>{{ $i_kamar->kapasitas }}</td>
                             <td>
-                                <a href="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}" class="btn btn-sm btn-primary">
+                                <button type="button" data-idkos="{{ $id }}" data-id="{{ $i_kamar->id }}"
+                                    class="show btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
-                                </a>
+                                </button>
                                 <a href="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/edit" class="btn btn-sm btn-success">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/destroy" method="POST" class="d-inline">
+                                <form action="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/destroy" method="POST"
+                                    class="d-inline">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-danger"><i
+                                            class="fas fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
-
                     @endforeach
+
                 </tbody>
             </table>
             <br>
             {{ $kamar->links() }}
         </div>
     </div>
+    <x-modalShow titleModal="Detail Kamar" type="kamar" size="modal-lg" />
+    <script>
+        $(document).ready(function() {
+            $('body').on('click', '.show', function() {
+                var data_id_kos = $(this).data('idkos');
+                var data_id = $(this).data('id');
+                var list = '';
+                $.get('/admin/kos/' + data_id_kos + '/kamar/' + data_id, function(data) {
+                    console.log(data);
+                    $('#show-modal').modal('show');
+
+                    $('#namakos').text(data.kos.nama);
+                    $('#namakamar').text(data.nama);
+                    $('#kapasitas').text(data.kapasitas);
+                    $('#harga').text(data.harga);
+                    $('#pembayaran').text(data.pembayaran);
+                    $.each(data.fasilitas, function(index, value) {
+                        list += '<li>' + value.nama + '</li>';
+                    });
+                    $('#fasilitas').html('<ul>'+list+'</ul>');
+                })
+            });
+        });
+
+    </script>
 @endsection

@@ -50,9 +50,7 @@ class KamarController extends Controller
 
     public function show(Kos $kos, Kamar $kamar)
     {
-        $all = Kamar::findOrFail($kamar->id);
-        dd(count($all->fasilitas));
-        return view('kamar.show');
+        return Kamar::with('kos','fasilitas')->findOrFail($kamar->id);
     }
 
     public function edit(Kos $kos, Kamar $kamar)

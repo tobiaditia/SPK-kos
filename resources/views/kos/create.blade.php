@@ -6,7 +6,7 @@
             <h3 class="card-title">Tambah Data Kos</h3>
         </div>
         <div class="card-body">
-            <form action="/admin/kos/store" method="POST">
+            <form action="/admin/kos" method="POST">
                 @csrf
                 <div class="form-group row">
                     <label for="nama" class="col-sm-2 col-form-label">Nama</label>
@@ -18,38 +18,9 @@
                     <label for="nama" class="col-sm-2 col-form-label">Lokasi</label>
                     <div class="col-sm-10">
                         <div class="row">
-                            <div class="form-group col-sm-12 col-md-6">
-                                <label for="provinsi">Provinsi</label>
-                                <select class="custom-select" id="provinsi">
-                                    <option value="perhari">Per Hari</option>
-                                    <option value="perminggu">Per Minggu</option>
-                                    <option value="perbulan">Per Bulan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-sm-12 col-md-6">
-                                <label for="kebupaten">Kabupaten/Kota</label>
-                                <select class="custom-select"  id="kebupaten">
-                                    <option value="perhari">Per Hari</option>
-                                    <option value="perminggu">Per Minggu</option>
-                                    <option value="perbulan">Per Bulan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-sm-12 col-md-6">
-                                <label for="kecamatan">Kecamatan</label>
-                                <select class="custom-select"  id="kecamatan">
-                                    <option value="perhari">Per Hari</option>
-                                    <option value="perminggu">Per Minggu</option>
-                                    <option value="perbulan">Per Bulan</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-sm-12 col-md-6">
-                                <label for="kelurahan">Kelurahan</label>
-                                <select class="custom-select" name="lokasi" id="kelurahan">
-                                    <option value="perhari">Per Hari</option>
-                                    <option value="perminggu">Per Minggu</option>
-                                    <option value="perbulan">Per Bulan</option>
-                                </select>
-                            </div>
+                            <x-select type="kabkota" />
+                            <x-select type="kecamatan" />
+                            <x-select type="kelurahan" />
                         </div>
                     </div>
                 </div>
@@ -70,4 +41,58 @@
             </form>
         </div>
     </div>
+    <script>
+        var val_kabkota_code;
+        var val_kecamatan_code;
+        $('#selectKabkota').change(function() {
+            val_kabkota_code = $(this).val();
+            $('#selectKelurahan').empty();
+            if (val_kabkota_code) {
+                $.ajax({
+                    url: "{{ url('/public/get-kecamatan') }}/" + val_kabkota_code,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#selectKecamatan').empty();
+                        $.each(data, function(key, value) {
+                            $('#selectKecamatan').append('<option value="' + value
+                                .kecamatan_code + '">' +
+                                value.kecamatan_name + '</option>');
+                        });
+
+
+                    }
+                });
+            } else {
+                $('#selectKecamatan').empty();
+            }
+        });
+
+        $('#selectKecamatan').change(function() {
+            val_kecamatan_code = $(this).val();
+            console.log(val_kabkota_code);
+            console.log(val_kecamatan_code);
+            if (val_kecamatan_code) {
+                $.ajax({
+                    url: "{{ url('/public/get-kelurahan') }}/" + val_kabkota_code + "/" +
+                        val_kecamatan_code,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#selectKelurahan').empty();
+                        $.each(data, function(key, value) {
+                            $('#selectKelurahan').append('<option value="' + value
+                                .area_code + '">' +
+                                value.kelurahan_name + '</option>');
+                        });
+
+
+                    }
+                });
+            } else {
+                $('#selectKecamatan').empty();
+            }
+        });
+
+    </script>
 @endsection

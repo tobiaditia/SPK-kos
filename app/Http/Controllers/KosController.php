@@ -22,18 +22,31 @@ class KosController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'required',
+            'id_lokasi' => 'required',
+            'deskripsi' => 'required',
+            'no_hp' => 'required',
+        ]);
+
+        Kos::create([
+            'nama' => $request->nama,
+            'id_lokasi' => $request->id_lokasi,
+            'deskripsi' => $request->deskripsi,
+            'no_hp' => $request->no_hp,
+        ]);
+
+        return redirect('/admin/kos');
     }
 
     public function show(Kos $kos)
     {
-        dd($kos->id);
-        return view('kos.show');
+        return response()->json($kos);
     }
 
     public function edit(Kos $kos)
     {
-        dd($kos->id);
-        return view('kos.edit');
+        return view('kos.edit',['kos'=>$kos]);
     }
 
     public function update(Request $request, Kos $kos)
@@ -42,6 +55,7 @@ class KosController extends Controller
 
     public function destroy(Kos $kos)
     {
+        $kos->delete();
     }
 
     public function kamar(Kos $kos)

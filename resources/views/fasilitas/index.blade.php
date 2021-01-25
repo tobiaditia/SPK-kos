@@ -23,8 +23,6 @@
                             <td>{{ $loop->iteration + $fasilitas->firstItem() - 1 }}</td>
                             <td>{{ $i_fasilitas->nama }}</td>
                             <td>
-                                <a href="/admin/fasilitas/{{ $i_fasilitas->id }}" class="btn btn-sm btn-primary"><i
-                                        class="fas fa-eye"></i></a>
                                 <a href="/admin/fasilitas/{{ $i_fasilitas->id }}/edit" class="btn btn-sm btn-success"><i
                                         class="fas fa-edit"></i></a>
                                 <form action="/admin/fasilitas/{{ $i_fasilitas->id }}" method="POST" class="d-inline">
