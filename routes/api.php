@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('search-kos', 'PublicController@search');
+Route::prefix('kos')->group(function () {
+    Route::get('search-kos', 'PublicController@search');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
