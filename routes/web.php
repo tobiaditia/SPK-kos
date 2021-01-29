@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'PublicController@index');
 
 Route::prefix('public')->group(function () {
+    Route::get('/cari-kos', 'PublicController@search');
+    Route::get('/kamar/{id}', 'PublicController@kamar');
+    Route::get('/kos/{id}', 'PublicController@kos');
     Route::get('/get-kecamatan/{id_kab}', 'AdministrativeAreaController@getKecamatan');
     Route::get('/get-kelurahan/{id_kab}/{id_kec}', 'AdministrativeAreaController@getKelurahan');
 });

@@ -13,6 +13,7 @@ class Kamar extends Model
         'kapasitas',
         'harga',
         'pembayaran',
+        'gambar'
     ];
 
     public function kos()

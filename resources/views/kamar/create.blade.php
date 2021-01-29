@@ -6,7 +6,7 @@
             <h3 class="card-title">Tambah Data Kamar</h3>
         </div>
         <div class="card-body">
-            <form action="/admin/kos/{{ $kos->id }}/kamar/store" method="POST">
+            <form action="/admin/kos/{{ $kos->id }}/kamar/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="kos_id" value="{{ $kos->id }}">
                 <div class="form-group row">
@@ -35,6 +35,12 @@
                             <option value="perminggu">Per Minggu</option>
                             <option value="perbulan">Per Bulan</option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
+                    <div class="col-sm-10">
+                        <input type="file" class="form-control" id="gambar" name="gambar">
                     </div>
                 </div>
                 <div class="form-group row">

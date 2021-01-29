@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Fasilitas;
-use App\FasilitasKamar;
 use App\Kamar;
 use App\Kos;
 use Illuminate\Http\Request;
@@ -20,21 +19,27 @@ class KamarController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'nama' => 'required',
             'kapasitas' => 'required',
             'harga' => 'required',
             'pembayaran' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        
+
+        $imageName = time() . '.' . $request->gambar->extension();
+
         DB::beginTransaction();
         try {
+            $request->gambar->move(public_path('img/kos'), $imageName);
             $kamar = Kamar::create([
                 'kos_id' => $request->kos_id,
                 'nama' => $request->nama,
                 'kapasitas' => $request->kapasitas,
                 'harga' => $request->harga,
                 'pembayaran' => $request->pembayaran,
+                'gambar' => $imageName
             ])->id;
 
             Kamar::findOrFail($kamar)->fasilitas()->attach($request->fasilitas);
@@ -50,7 +55,7 @@ class KamarController extends Controller
 
     public function show(Kos $kos, Kamar $kamar)
     {
-        return Kamar::with('kos','fasilitas')->findOrFail($kamar->id);
+        return Kamar::with('kos', 'fasilitas')->findOrFail($kamar->id);
     }
 
     public function edit(Kos $kos, Kamar $kamar)
@@ -63,7 +68,6 @@ class KamarController extends Controller
             'fasilitas' => $fasilitas,
             'has_fasilitas' => $has_fasilitas
         ]);
-        
     }
 
     public function update(Request $request, Kos $kos, Kamar $kamar)
@@ -103,6 +107,14 @@ class KamarController extends Controller
         if (count($kamar->fasilitas) != 0) {
             $kamar->fasilitas()->detach();
         }
+
+        if ($kamar->gambar != 'default.jpg') {
+            $image_path = public_path() . "/img/kos/" . $kamar->gambar;
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+
         $kamar->delete();
 
         return redirect('/admin/kos/' . $kos->id . '/kamar');

@@ -20,6 +20,7 @@ class CreateKamarTable extends Migration
             $table->integer('kapasitas');
             $table->integer('harga');
             $table->enum('pembayaran', ['perhari', 'perminggu', 'perbulan']);
+            $table->string('gambar', 255)->default('default.jpg');
             $table->timestamps();
 
             $table->foreign('kos_id')->references('id')
