@@ -24,15 +24,19 @@ class KamarController extends Controller
             'nama' => 'required',
             'kapasitas' => 'required',
             'harga' => 'required',
-            'pembayaran' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pembayaran' => 'required'
         ]);
 
-        $imageName = time() . '.' . $request->gambar->extension();
 
         DB::beginTransaction();
         try {
-            $request->gambar->move(public_path('img/kos'), $imageName);
+            if (empty($request->gambar)) {
+                $imageName = 'default.jpg';
+            } else {
+                $imageName = time() . '.' . $request->gambar->extension();
+                $request->gambar->move(public_path('img/kos'), $imageName);
+            }
+
             $kamar = Kamar::create([
                 'kos_id' => $request->kos_id,
                 'nama' => $request->nama,
@@ -46,7 +50,7 @@ class KamarController extends Controller
 
             DB::commit();
 
-            return redirect('/admin/kos/' . $request->kos_id . '/kamar');
+            return redirect('/admin/kos/' . $request->kos_id . '/kamar')->with(['success' => 'Data berhasil ditambahkan']);
         } catch (\Throwable $th) {
             DB::rollback();
             return $th;
@@ -72,7 +76,7 @@ class KamarController extends Controller
 
     public function update(Request $request, Kos $kos, Kamar $kamar)
     {
-
+        // dd($request);
         $request->validate([
             'nama' => 'required',
             'kapasitas' => 'required',
@@ -82,19 +86,27 @@ class KamarController extends Controller
 
         DB::beginTransaction();
         try {
+            if (empty($request->gambar)) {
+                $imageName = $kamar->gambar;
+            } else {
+                $imageName = time() . '.' . $request->gambar->extension();
+                $request->gambar->move(public_path('img/kos'), $imageName);
+            }
+
             $kamar->update([
                 'kos_id' => $request->kos_id,
                 'nama' => $request->nama,
                 'kapasitas' => $request->kapasitas,
                 'harga' => $request->harga,
                 'pembayaran' => $request->pembayaran,
+                'gambar' => $imageName
             ]);
 
             $kamar->fasilitas()->sync($request->fasilitas);
 
             DB::commit();
 
-            return redirect('/admin/kos/' . $kos->id . '/kamar');
+            return redirect('/admin/kos/' . $kos->id . '/kamar')->with(['success' => 'Data berhasil diedit']);
         } catch (\Throwable $th) {
             DB::rollback();
             return $th;
@@ -117,6 +129,6 @@ class KamarController extends Controller
 
         $kamar->delete();
 
-        return redirect('/admin/kos/' . $kos->id . '/kamar');
+        return redirect('/admin/kos/' . $kos->id . '/kamar')->with(['success' => 'Data berhasil dihapus']);
     }
 }

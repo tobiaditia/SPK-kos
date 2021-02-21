@@ -17,6 +17,9 @@
                 <div class="row">
                     <div class="col-sm-12">
                         @if ($type == 'kos')
+                            <div class="text-center w-100">
+                                <img src="" alt="" id="gambar_kos" class="card-img-top mb-1" style="max-width: 350px;">
+                            </div>
                             <table class="table">
                                 <tr>
                                     <td>Nama</td>
@@ -36,6 +39,10 @@
                                 </tr>
                             </table>
                         @elseif ($type == 'kamar')
+                            <div class="text-center w-100">
+                                <img src="" alt="" id="gambar_kamar" class="card-img-top mb-1"
+                                    style="max-width: 350px;">
+                            </div>
                             <table class="table">
                                 <tr>
                                     <td>Nama Kos</td>

@@ -12,19 +12,19 @@
                 <div class="form-group row">
                     <label for="nama" class="col-sm-2 col-form-label">Nama</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="nama" name="nama">
+                        <input required type="text" class="form-control" id="nama" name="nama">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="kapasitas" class="col-sm-2 col-form-label">Kapasitas</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="kapasitas" name="kapasitas">
+                        <input required type="number" class="form-control" id="kapasitas" name="kapasitas">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="harga" class="col-sm-2 col-form-label">Harga</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="harga" name="harga">
+                        <input required type="number" class="form-control" id="harga" name="harga">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -40,6 +40,9 @@
                 <div class="form-group row">
                     <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
                     <div class="col-sm-10">
+                        <img id="image_preview_container" src="{{ asset('img/kos/default.jpg') }}" alt="preview image"
+                            style="max-height: 150px;">
+                        <span id="image_preview_container_ket"><i>Gambar Default</i></span>
                         <input type="file" class="form-control" id="gambar" name="gambar">
                     </div>
                 </div>

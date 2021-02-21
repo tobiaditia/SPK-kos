@@ -57,7 +57,8 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ '/dist/img/user2-160x160.jpg' }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ '/dist/img/user2-160x160.jpg' }}" class="img-circle elevation-2"
+                            alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Admin</a>
@@ -70,7 +71,8 @@
                         data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="/admin/kos" class="nav-link  {{ Request::segment(2) == 'kos' ? 'active' : '' }}">
+                            <a href="/admin/kos"
+                                class="nav-link  {{ Request::segment(2) == 'kos' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-image"></i>
                                 <p>
                                     Kos
@@ -154,6 +156,100 @@
     <script src=" {{ '/dist/js/adminlte.js' }}"></script>
     <script src=" {{ '/dist/js/pages/dashboard.js' }}"></script>
     <script src=" {{ '/dist/js/demo.js' }}"></script>
+
+    <script>
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+
+        });
+
+        var val_kabkota_code;
+        var val_kecamatan_code;
+        $('#selectKabkota').change(function() {
+            val_kabkota_code = $(this).val();
+            $('#selectKelurahan').empty();
+            if (val_kabkota_code) {
+                $.ajax({
+                    url: "{{ url('/public/get-kecamatan') }}/" + val_kabkota_code,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#selectKecamatan').empty();
+                        $('#selectKecamatan').append('<option value="' + data
+                            .parent_code + '">Pilih Semua</option>');
+                        $.each(data.data, function(key, value) {
+                            $('#selectKecamatan').append('<option value="' + value
+                                .kecamatan_code + '">' +
+                                value.kecamatan_name + '</option>');
+                        });
+                        $("#selectKecamatan").trigger('change');
+
+                    }
+                });
+            } else {
+                $('#selectKecamatan').empty();
+            }
+        });
+
+        $('#selectKecamatan').change(function() {
+            val_kecamatan_code = $(this).val();
+
+            if (val_kecamatan_code.length > 2) {
+                console.log('sini');
+                $('#selectKelurahan').empty();
+                $('#selectKelurahan').append('<option value="' + val_kecamatan_code + '">Pilih Semua</option>');
+            } else if (val_kecamatan_code) {
+                console.log('sini2');
+
+                $.ajax({
+                    url: "{{ url('/public/get-kelurahan') }}/" + val_kabkota_code + "/" +
+                        val_kecamatan_code,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#selectKelurahan').empty();
+                        $('#selectKelurahan').append('<option value="' + data
+                            .parent_code + '">Pilih Semua</option>');
+                        $.each(data.data, function(key, value) {
+                            $('#selectKelurahan').append('<option value="' + value
+                                .area_code + '">' +
+                                value.kelurahan_name + '</option>');
+                        });
+                        $("#selectKelurahan").trigger('change');
+
+                    }
+                });
+            } else {
+                $('#selectKecamatan').empty();
+            }
+            console.log($('#selectKelurahan').val());
+        });
+
+        $(".alert").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert").slideUp(500);
+        });
+
+        $('#gambar').change(function() {
+
+            let reader = new FileReader();
+
+            reader.onload = (e) => {
+
+                $('#image_preview_container').attr('src', e.target.result);
+                $('#image_preview_container_ket').hide();
+            }
+
+            reader.readAsDataURL(this.files[0]);
+
+        });
+
+    </script>
 </body>
 
 </html>

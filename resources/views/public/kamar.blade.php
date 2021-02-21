@@ -19,14 +19,6 @@
                                 <div class="col-12 product-image-thumbs">
                                     <div class="product-image-thumb active"><img src="/img/kos/{{ $kamar->gambar }}"
                                             alt="Product Image"></div>
-                                    <div class="product-image-thumb"><img src="../../dist/img/prod-2.jpg"
-                                            alt="Product Image"></div>
-                                    <div class="product-image-thumb"><img src="../../dist/img/prod-3.jpg"
-                                            alt="Product Image"></div>
-                                    <div class="product-image-thumb"><img src="../../dist/img/prod-4.jpg"
-                                            alt="Product Image"></div>
-                                    <div class="product-image-thumb"><img src="../../dist/img/prod-5.jpg"
-                                            alt="Product Image"></div>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
@@ -64,13 +56,13 @@
                                         <td><i class="fas fa-phone-square fa-2x"></i></td>
                                         <td>{{ $kamar->kos->no_hp }}</td>
                                     </tr>
-                                    
-                                         
+
+
                                 </table>
 
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- /.card-body -->
                 </div>

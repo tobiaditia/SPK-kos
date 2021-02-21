@@ -13,12 +13,11 @@
                     <a href="#about" class="btn-get-started scrollto">Mulai</a>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
-                    {{-- <img src="assets/img/hero-img.png" class="img-fluid" alt="">
-                    --}}
+                    {{-- <img src="assets/img/hero-img.png" class="img-fluid" alt=""> --}}
                     <div class="card mt-4 mb-4">
                         <div class="card-body">
                             <h3 class="text-center">Cari Kos</h3>
-                            <form action="/public/cari-kos" method="GET">
+                            <form action="/public/cari-kamar-kos" method="GET">
                                 <b>Pilih Lokasi</b>
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12">
@@ -115,35 +114,37 @@
         <section id="search-kos" class="clients section-bg">
             <div class="container py-4">
                 <h5>Sudah Tau Kos yang anda Pilih ?</h5>
-                <div class="form-group row pt-3">
-                    <div class="col-sm-10">
-                        <input name="kos" id="custom-input" type="text" class="form-control"
-                            placeholder="Cari Nama Kos">
+                <form action="/public/cari-kos" method="GET">
+                    <div class="form-group row pt-3">
+                        <div class="col-sm-10">
+                            <input name="kos" id="custom-input" type="text" class="form-control"
+                                placeholder="Cari Nama Kos">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" id="custom-button" class="btn btn-success w-100">Cari</button>
+                        </div>
                     </div>
-                    <div class="col-sm-2">
-                        <button type="submit" id="custom-button" class="btn btn-success w-100">Cari</button>
-                    </div>
-                </div>
+                </form>
                 <style>
-                  #custom-input {
-                      border-radius: 30px !important;
-                      min-height: 40px !important;
-                      line-height: 1.5 !important;
-                      /* font-size: 13px; */
-                      border: 1px solid #ced4da !important;
-                      border-color: border-color: #a177ff !important;
-                      border-color: rgb(161 119 255) !important;
-                      box-shadow: 0 0 0 0.2rem rgba(161, 119, 255, .5) !important;
-                      padding: 0 20px !important;
-                  }
+                    #custom-input {
+                        border-radius: 30px !important;
+                        min-height: 40px !important;
+                        line-height: 1.5 !important;
+                        /* font-size: 13px; */
+                        border: 1px solid #ced4da !important;
+                        border-color: border-color: #a177ff !important;
+                        border-color: rgb(161 119 255) !important;
+                        box-shadow: 0 0 0 0.2rem rgba(161, 119, 255, .5) !important;
+                        padding: 0 20px !important;
+                    }
 
-                  #custom-button {
-                      border-radius: 30px;
-                      min-height: 40px;
-                      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, .5);
-                  }
+                    #custom-button {
+                        border-radius: 30px;
+                        min-height: 40px;
+                        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, .5);
+                    }
 
-              </style>
+                </style>
             </div>
         </section><!-- End Clients Section -->
 
@@ -151,29 +152,33 @@
             <div class="container">
 
                 <div class="row">
-                    @for ($i = 0; $i < 7; $i++)
+                    @foreach ($kamar as $i_kamar)
 
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card shadow-sm border-0 transform-on-hover mb-4">
-                                <a class="lightbox" href="{{ url('img/kos/default.jpg') }}">
-                                    <img src="{{ url('img/kos/default.jpg') }}" alt="Card Image" class="card-img-top">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card shadow-sm border-0 transform-on-hover mb-0">
+                                <a class="lightbox" href="/public/kamar/{{ $i_kamar->id }}">
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                        <img src="{{ url('img/kos/') . '/' . $i_kamar->gambar }}" alt="Card Image"
+                                            class="card-img-top embed-responsive-item">
+                                    </div>
                                 </a>
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h6><a href="#" class="text-success">Lorem Ipsum</a></h6>
-                                        <span> <b>4</b> <i class="fas fa-users"></i></span>
+                                        <h6><a href="/public/kamar/{{ $i_kamar->id }}"
+                                                class="text-success">{{ $i_kamar->nama }}</a></h6>
+                                        <span> <b>{{ $i_kamar->kapasitas }}</b> <i class="fas fa-users"></i></span>
                                     </div>
-                                    <small>Kos Bu Indah</small>
+                                    <small>{{ $i_kamar->kos->nama }}</small>
+                                    <p>@currency($i_kamar->harga) <i>( {{ $i_kamar->pembayaran }} )</i></p>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
                 </div>
 
             </div>
         </section>
-        {{--
-        <section id="contact" class="contact section-bg">
+        {{-- <section id="contact" class="contact section-bg">
             <div class="container">
 
                 <div class="section-title">

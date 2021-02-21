@@ -6,7 +6,8 @@
             <h3 class="card-title">Edit Data Kamar</h3>
         </div>
         <div class="card-body">
-            <form action="/admin/kos/{{ $kos->id }}/kamar/{{ $kamar->id }}" method="POST">
+            <form action="/admin/kos/{{ $kos->id }}/kamar/{{ $kamar->id }}" method="POST"
+                enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <input type="hidden" name="kos_id" value="{{ $kos->id }}">
@@ -40,6 +41,15 @@
                             <option {{ $kamar->pembayaran == 'perbulan' ? 'selected' : '' }} value="perbulan">Per Bulan
                             </option>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="gambar" class="col-sm-2 col-form-label">Gambar</label>
+                    <div class="col-sm-10">
+                        <img id="image_preview_container" src="{{ asset('img/kos/') . '/' . $kamar->gambar }}"
+                            alt="preview image" style="max-height: 150px;">
+                        <span id="image_preview_container_ket"><i></i></span>
+                        <input type="file" class="form-control" id="gambar" name="gambar">
                     </div>
                 </div>
                 <div class="form-group row">

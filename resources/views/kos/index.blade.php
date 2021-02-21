@@ -9,6 +9,12 @@
             </div>
         </div>
         <div class="card-body">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -26,13 +32,15 @@
                             <td>{{ $i_kos->kamar->count() }}</td>
                             <td>
                                 {{-- <a href="/admin/kos/{{ $i_kos->id }}" data-id="{{ $i_kos->id }}" class="btn btn-sm btn-primary show"><i class="fas fa-eye"></i></a> --}}
-                                <button data-id="{{ $i_kos->id }}" class="btn btn-sm btn-primary show"><i class="fas fa-eye"></i></button>
-                                <a href="/admin/kos/{{ $i_kos->id }}/edit" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
+                                <button data-id="{{ $i_kos->id }}" class="btn btn-sm btn-primary show"><i
+                                        class="fas fa-eye"></i></button>
+                                <a href="/admin/kos/{{ $i_kos->id }}/edit" class="btn btn-sm btn-success"><i
+                                        class="fas fa-edit"></i></a>
                                 <form action="/admin/kos/{{ $i_kos->id }}" method="POST" class="d-inline">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                            class="fas fa-trash"></i></button>
+                                    <button onclick="return confirm('Apakah Anda Yakin ?')" type="submit"
+                                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                                 <a href="/admin/kos/{{ $i_kos->id }}/kamar" class="btn btn-sm btn-primary">
                                     <i class="fas fa-list"></i> Lihat Kamar
@@ -53,16 +61,18 @@
         $(document).ready(function() {
             $('body').on('click', '.show', function() {
                 var data_id = $(this).data('id');
-                $.get('kos/' + data_id , function(data) {
-                    
+                $.get('kos/' + data_id, function(data) {
                     $('#show-modal').modal('show');
 
+                    $('#gambar_kos').attr("src", "/img/kos/" + data.gambar);
                     $('#nama').text(data.nama);
-                    $('#id_lokasi').text(data.id_lokasi);
+                    $('#id_lokasi').text(data.area.kabupaten + ' , KEC. ' + data.area.kecamatan +
+                        ' , KEL. ' + data.area.kelurahan);
                     $('#deskripsi').text(data.deskripsi);
                     $('#no_hp').text(data.no_hp);
                 })
             });
         });
+
     </script>
 @endsection

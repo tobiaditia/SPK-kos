@@ -29,7 +29,7 @@ class FasilitasController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect('/admin/fasilitas');
+        return redirect('/admin/fasilitas')->with(['success' => 'Data berhasil ditambahkan']);
     }
 
     public function show($id)
@@ -54,7 +54,7 @@ class FasilitasController extends Controller
             'nama' => $request->nama,
         ]);
 
-        return redirect('/admin/fasilitas');
+        return redirect('/admin/fasilitas')->with(['success' => 'Data berhasil diedit']);
     }
 
     public function destroy(Fasilitas $fasilitas)
@@ -65,6 +65,6 @@ class FasilitasController extends Controller
         }
         $fasilitas->delete();
 
-        return redirect('/admin/fasilitas');
+        return redirect('/admin/fasilitas')->with(['success' => 'Data berhasil dihapus']);
     }
 }

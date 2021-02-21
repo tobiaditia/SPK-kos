@@ -70,8 +70,7 @@
                     <ul>
                         <li class="active"><a href="/">Beranda</a></li>
                         <li><a href="#rekomendasi">Rekomendasi</a></li>
-                        <li><a href="#services">Layanan</a></li>
-                        <li><a href="#contact">Kontak</a></li>
+                        <li><a href="#footer">Kontak</a></li>
 
                         <li class="get-started"><a href="#about">Mulai</a></li>
                     </ul>

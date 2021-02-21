@@ -10,6 +10,7 @@ class Kos extends Model
     protected $fillable = [
         'nama',
         'id_lokasi',
+        'gambar',
         'deskripsi',
         'no_hp',
     ];
@@ -17,5 +18,10 @@ class Kos extends Model
     public function kamar()
     {
         return $this->hasMany('App\Kamar');
+    }
+
+    public function administrative_area()
+    {
+        return $this->hasOne('App\AdministrativeArea', 'area_code', 'id_lokasi');
     }
 }

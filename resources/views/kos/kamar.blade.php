@@ -3,12 +3,18 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">List Kamar</h3>
+            <h3 class="card-title">List Kamar Kos <b> -- {{ $nama_kos }} --</b></h3>
             <div class="float-right">
                 <a href="/admin/kos/{{ $id }}/kamar/create" class="btn btn-sm btn-success">Tambah</a>
             </div>
         </div>
         <div class="card-body">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -34,15 +40,16 @@
                                     class="show btn btn-sm btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <a href="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/edit" class="btn btn-sm btn-success">
+                                <a href="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/edit"
+                                    class="btn btn-sm btn-success">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/destroy" method="POST"
-                                    class="d-inline">
+                                <form action="/admin/kos/{{ $id }}/kamar/{{ $i_kamar->id }}/destroy"
+                                    method="POST" class="d-inline">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                            class="fas fa-trash"></i></button>
+                                    <button onclick="return confirm('Apakah Anda Yakin ?')" type="submit"
+                                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -65,15 +72,16 @@
                     console.log(data);
                     $('#show-modal').modal('show');
 
+                    $('#gambar_kamar').attr("src", "/img/kos/" + data.gambar);
                     $('#namakos').text(data.kos.nama);
                     $('#namakamar').text(data.nama);
                     $('#kapasitas').text(data.kapasitas);
-                    $('#harga').text(data.harga);
+                    $('#harga').text('Rp. ' + data.harga);
                     $('#pembayaran').text(data.pembayaran);
                     $.each(data.fasilitas, function(index, value) {
                         list += '<li>' + value.nama + '</li>';
                     });
-                    $('#fasilitas').html('<ul>'+list+'</ul>');
+                    $('#fasilitas').html('<ul>' + list + '</ul>');
                 })
             });
         });

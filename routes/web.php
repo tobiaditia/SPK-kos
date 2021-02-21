@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'PublicController@index');
 
 Route::prefix('public')->group(function () {
-    Route::get('/cari-kos', 'PublicController@search');
+    Route::get('/cari-kamar-kos', 'PublicController@search');
+    Route::get('/cari-kos', 'PublicController@searchKos');
     Route::get('/kamar/{id}', 'PublicController@kamar');
     Route::get('/kos/{id}', 'PublicController@kos');
     Route::get('/get-kecamatan/{id_kab}', 'AdministrativeAreaController@getKecamatan');

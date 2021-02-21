@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AdministrativeArea;
 use App\Fasilitas;
 use App\Kamar;
 use App\Kos;
@@ -14,10 +15,11 @@ class PublicController extends Controller
     {
         $fasilitas = Fasilitas::get();
         $kabkota = DB::table('v_kabkota')->get();
-        // $kamar = Kamar::with('kos','fasilitas')->find($id);
+        $kamar = Kamar::with('kos', 'fasilitas')->limit(6)->get();
         return view('public.index', [
             'fasilitas' => $fasilitas,
-            'kabkota' => $kabkota
+            'kabkota' => $kabkota,
+            'kamar' => $kamar
         ]);
     }
 
@@ -33,10 +35,10 @@ class PublicController extends Controller
         }
 
         if ($request->query('lokasi')) {
-            if (strlen($request->query('lokasi')) == 4 || substr($request->query('lokasi'),-6)=='000000') {
+            if (strlen($request->query('lokasi')) == 4 || substr($request->query('lokasi'), -6) == '000000') {
                 $cek = 'use_like';
                 $lokasi = $request->query('lokasi');
-            } elseif (strlen($request->query('lokasi')) == 6 || substr($request->query('lokasi'),-4)=='0000') {
+            } elseif (strlen($request->query('lokasi')) == 6 || substr($request->query('lokasi'), -4) == '0000') {
                 $cek = 'use_like';
                 $lokasi = $request->query('lokasi');
             } else {
@@ -72,14 +74,16 @@ class PublicController extends Controller
             });
         };
         if (!empty($fasilitas)) {
+            return $fasilitas;
+            die();
             $data->orWhereHas('fasilitas', function ($q) use ($fasilitas) {
-                $q->where('fasilitas.id', $fasilitas);
+                $q->whereIn('fasilitas.id', $fasilitas);
             });
         }
         $data->where($where);
         $data2 = $data->paginate(8);
         // return $data2;
-        return view('public.result',[
+        return view('public.result', [
             'search' => [
                 'lokasi' => $request->query('lokasi'),
                 'kapasitas' => $request->query('kapasitas'),
@@ -89,20 +93,36 @@ class PublicController extends Controller
                 'pembayaran' => $request->query('pembayaran'),
             ],
             'jumlah' => count($data2),
-            'fasilitas' => ($fasilitas) ? Fasilitas::whereIn('id',$fasilitas)->get() : null,
+            'fasilitas' => ($fasilitas) ? Fasilitas::whereIn('id', $fasilitas)->get() : null,
             'data' => $data2
+        ]);
+    }
+
+    public function searchKos(Request $request)
+    {
+        $cari = $request->query('kos');
+        $data = Kos::where('nama', 'like', '%' . $cari . '%')->paginate(8);
+
+        return view('public.result_kos', [
+            'data' => $data
         ]);
     }
 
     public function kamar($id)
     {
-        $kamar = Kamar::with('kos','fasilitas')->find($id);
-        return view('public.kamar',compact('kamar'));
+        $kamar = Kamar::with('kos', 'fasilitas')->find($id);
+        return view('public.kamar', compact('kamar'));
     }
 
     public function kos($id)
     {
-        $kos = Kos::with('kamar')->find($id);
-        return view('public.kos',compact('kos'));
+        $kos = Kos::with('kamar', 'administrative_area')->find($id);
+        $area = [
+            'kabupaten' => AdministrativeArea::where('area_code', substr($kos->id_lokasi, 0, 4) . '000000')->first()->area_name,
+            'kecamatan' => AdministrativeArea::where('area_code', substr($kos->id_lokasi, 0, 6) . '0000')->first()->area_name,
+            'kelurahan' => AdministrativeArea::where('area_code', $kos->id_lokasi)->first()->area_name,
+        ];
+        // return $area;
+        return view('public.kos', compact('kos', 'area'));
     }
 }

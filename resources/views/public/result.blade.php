@@ -43,11 +43,15 @@
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card shadow-sm border-0 transform-on-hover mb-0">
                                 <a class="lightbox" href="/public/kamar/{{ $i_data->id }}">
-                                    <img src="{{ url('img/kos/').'/'.$i_data->gambar }}" alt="Card Image" class="card-img-top">
+                                    <div class="embed-responsive embed-responsive-4by3">
+                                        <img src="{{ url('img/kos/') . '/' . $i_data->gambar }}" alt="Card Image"
+                                            class="card-img-top embed-responsive-item">
+                                    </div>
                                 </a>
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <h6><a href="#" class="text-success">{{ $i_data->nama }}</a></h6>
+                                        <h6><a href="/public/kamar/{{ $i_data->id }}"
+                                                class="text-success">{{ $i_data->nama }}</a></h6>
                                         <span> <b>{{ $i_data->kapasitas }}</b> <i class="fas fa-users"></i></span>
                                     </div>
                                     <small>{{ $i_data->kos->nama }}</small>

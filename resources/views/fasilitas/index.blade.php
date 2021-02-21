@@ -9,6 +9,12 @@
             </div>
         </div>
         <div class="card-body">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -28,8 +34,8 @@
                                 <form action="/admin/fasilitas/{{ $i_fasilitas->id }}" method="POST" class="d-inline">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                            class="fas fa-trash"></i></button>
+                                    <button onclick="return confirm('Apakah Anda Yakin ?')" type="submit"
+                                        class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
